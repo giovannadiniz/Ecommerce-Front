@@ -1,0 +1,98 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Crie sua conta</h1>
+      <p>Preencha os dados abaixo para se registrar</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-group">
+        <label for="fullName">Nome Completo</label>
+        <input
+          type="text"
+          id="fullName"
+          [(ngModel)]="fullName"
+          name="fullName"
+          placeholder="Maria Silva"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="username">Nome de Usuário</label>
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="maria.silva"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="seu@email.com"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input
+          type="tel"
+          id="phone"
+          [(ngModel)]="phone"
+          name="phone"
+          placeholder="(00) 00000-0000"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          required
+          minlength="6"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirme sua Senha</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="••••••••"
+          required
+        >
+        <small *ngIf="password && confirmPassword && !passwordsMatch()" class="error-message">
+          As senhas não coincidem
+        </small>
+      </div>
+
+      <button
+        type="submit"
+        class="register-button"
+        [disabled]="!passwordsMatch()"
+      >
+        Registrar
+      </button>
+    </form>
+
+    <div class="register-footer">
+      <p>Já tem uma conta? <a routerLink="/login">Faça login</a></p>
+    </div>
+  </div>
+</div>

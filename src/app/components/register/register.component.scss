@@ -1,0 +1,135 @@
+/* Mantendo a mesma paleta de cores do login */
+:root {
+  --pink-light: #fff0f6;
+  --pink-medium: #ffd6e7;
+  --pink-dark: #ff9eb7;
+  --text-color: #5a3d4a;
+  --error-color: #ff4757;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('https://images.unsplash.com/photo-1548504778-b14db6c34b04?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  padding: 20px;
+}
+
+.register-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.register-header h1 {
+  color: var(--pink-dark);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.register-header p {
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-group input {
+  padding: 12px 15px;
+  border: 2px solid var(--pink-medium);
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  border-color: var(--pink-dark);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 158, 183, 0.2);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.register-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, var(--pink-medium), var(--pink-dark));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.register-button:hover:not(:disabled) {
+  background: linear-gradient(to right, var(--pink-dark), #ff7a9b);
+  transform: translateY(-2px);
+}
+
+.register-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.register-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-footer p {
+  color: var(--text-color);
+}
+
+.register-footer a {
+  color: var(--pink-dark);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 30px 20px;
+  }
+}
