@@ -72,11 +72,10 @@
         <input
           type="password"
           id="confirmPassword"
-          [(ngModel)]="confirmPassword"
           name="confirmPassword"
           placeholder="••••••••"
           required
-        >
+        />
         <small *ngIf="password && confirmPassword && !passwordsMatch()" class="error-message">
           As senhas não coincidem
         </small>
@@ -85,7 +84,6 @@
       <button
         type="submit"
         class="register-button"
-        [disabled]="!passwordsMatch()"
       >
         Registrar
       </button>
