@@ -18,6 +18,12 @@ export class RegisterComponent {
   password: string = '';
   confirmPassword: string = '';
 
+    ngOnInit(){
+      this.registerUSer();
+    }
+
+    private registerUser(){}
+
   onSubmit() {
     console.log('Registration data:', {
       fullName: this.fullName,
