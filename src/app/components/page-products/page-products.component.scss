@@ -11,3 +11,11 @@
     color: pink;
     font-size: 5rem;
 }
+.button-comprar{
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
