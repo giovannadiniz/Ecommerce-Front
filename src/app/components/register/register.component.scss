@@ -1,12 +1,3 @@
-/* Mantendo a mesma paleta de cores do login */
-:root {
-  --pink-light: #fff0f6;
-  --pink-medium: #ffd6e7;
-  --pink-dark: #ff9eb7;
-  --text-color: #5a3d4a;
-  --error-color: #ff4757;
-}
-
 .register-container {
   display: flex;
   justify-content: center;
@@ -86,11 +77,11 @@
   margin-top: 5px;
 }
 
-.register-button {
+button{
   width: 100%;
   padding: 14px;
-  background: linear-gradient(to right, var(--pink-medium), var(--pink-dark));
-  color: white;
+  background-color: #ff8da2;
+  color: var(--text-color);
   border: none;
   border-radius: 12px;
   font-size: 16px;

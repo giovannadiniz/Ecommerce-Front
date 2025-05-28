@@ -1,11 +1,5 @@
 /* Cores suaves e femininas */
-:root {
-  --primary-color: #ff9eb7; /* Rosa suave */
-  --secondary-color: #ffd6e0; /* Rosa mais claro */
-  --accent-color: #d45d79; /* Rosa mais escuro */
-  --text-color: #5a3d4a; /* Marrom rosado */
-  --light-color: #fff9fa; /* Branco rosado */
-}
+
 
 .login-container {
   display: flex;
@@ -72,7 +66,7 @@
   box-shadow: 0 0 0 3px rgba(255, 158, 183, 0.2);
 }
 
-.login-button {
+button {
   width: 100%;
   padding: 14px;
   background-color: #ff8da2;

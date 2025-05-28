@@ -21,44 +21,64 @@ export class RegisterComponent {
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
-  selectedRole: string = 'ADMIN';
+  successMessage: string = '';
 
-    constructor(
+  constructor(
     private authService: AuthenticationService,
     private router: Router
-  ) {}
+  ) {
+  }
 
-  onSubmit() {
-    if (!this.passwordsMatch()) {
-      this.errorMessage = 'As senhas não coincidem';
-      return ;
-    }
+   onSubmit() {
+     this.errorMessage = '';
+      this.successMessage = '';
 
     const userData: User = {
       fullname: this.fullName,
       username: this.username,
       email: this.email,
       phone: this.phone,
-      password: this.password
-      // Adicione outros campos conforme necessário pelo seu backend
+      password: this.password,
+      role: 'ADMIN'
     };
 
-      this.authService.registerUser(userData).subscribe({
+    this.authService.registerUser(userData).subscribe({
       next: (response) => {
         console.log('Registro bem-sucedido:', response);
-        this.router.navigate(['/login']);
+        this.successMessage = 'Registro realizado com sucesso! Redirecionando para o login...';
+        // Redireciona para o login após 2 segundos para mostrar a mensagem de sucesso
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
       },
       error: (err) => {
         console.error('Erro no registro:', err);
-        this.errorMessage = err.error?.message || 'Erro ao registrar. Tente novamente.';
+        if (err.status === 400) {
+          this.errorMessage = 'Usuário já existe. Escolha outro nome de usuário.';
+        } else {
+          this.errorMessage = 'Erro ao registrar. Tente novamente.';
+        }
       }
     });
   }
+
+  //   this.authService.registerUser(userData).subscribe({
+  //     next: (response) => {
+  //       console.log('Registro bem-sucedido:', response);
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: (err) => {
+  //       console.error('Erro no registro:', err);
+  //       this.errorMessage = err.error?.message || 'Erro ao registrar. Tente novamente.';
+  //     }
+  //   });
+  // }
 
   passwordsMatch(): boolean {
     return this.password === this.confirmPassword;
   }
 }
+
 
 //     ngOnInit(){
 //       this.registerUser();
@@ -68,7 +88,7 @@ export class RegisterComponent {
 //         this.user = new User;
 //       }
 //     }
-  
+
 
 //   onSubmit() {
 //     console.log('Registration data:', {
