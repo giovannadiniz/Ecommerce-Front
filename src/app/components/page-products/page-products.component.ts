@@ -46,14 +46,21 @@ export class PageProductsComponent {
     );
   }
 
-  addToCart(product: Product): void {
-    if (!this.authService.isAuthenticated()) {
-      this.snackBar.open('Faça login para adicionar ao carrinho', 'Fechar', {
-        duration: 3000
-      });
-      this.router.navigate(['/login']);
-      return;
-    }
+  addToCart(productId: number) {
+    this.cartService.addToCart(productId).subscribe({
+      next: (cart) => {
+        console.log('Produto adicionado ao carrinho', cart);
+
+        this.router.navigate(['/cart']);
+      },
+      error: (err) => {
+        if (err.message !== 'Usuário não autenticado') {
+          console.error('Erro ao adicionar ao carrinho', err);
+          // Tratamento de erro
+        }
+      }
+    });
+
 
     // const quantity = this.quantities[product.id] || 1;
     //
@@ -90,4 +97,6 @@ export class PageProductsComponent {
       this.quantities[productId]--;
     }
   }
+
+  protected readonly parseInt = parseInt;
 }

@@ -68,34 +68,34 @@ export class CartComponent implements OnInit {
     });
   }
 
-  clearCart(): void {
-    this.loading = true;
-    this.cartService.clearCart().subscribe({
-      next: () => {
-        this.cart = null;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Erro ao limpar o carrinho';
-        this.loading = false;
-        console.error(err);
-      }
-    });
-  }
-
-  removeCart(): void {
-    this.loading = true;
-    this.cartService.removeCart().subscribe({
-      next: () => {
-        this.cart = null;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Erro ao remover o carrinho';
-        this.loading = false;
-        console.error(err);
-      }
-    });
-  }
+  // clearCart(): void {
+  //   this.loading = true;
+  //   this.cartService.clearCart().subscribe({
+  //     next: () => {
+  //       this.cart = null;
+  //       this.loading = false;
+  //     },
+  //     error: (err) => {
+  //       this.error = 'Erro ao limpar o carrinho';
+  //       this.loading = false;
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+  //
+  // removeCart(): void {
+  //   this.loading = true;
+  //   this.cartService.removeCart().subscribe({
+  //     next: () => {
+  //       this.cart = null;
+  //       this.loading = false;
+  //     },
+  //     error: (err) => {
+  //       this.error = 'Erro ao remover o carrinho';
+  //       this.loading = false;
+  //       console.error(err);
+  //     }
+  //   });
+  // }
 }
 
