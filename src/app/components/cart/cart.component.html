@@ -18,7 +18,7 @@
   @if (cart) {
     <div class="cart-item">
       <div class="product-info">
-        <h3>{{ cart.product?.name }}</h3>
+        <h3>{{ cart.productName }}</h3>
         <p>{{ cart.product?.description }}</p>
         <p>Preço: {{ cart.product?.price | currency:'BRL' }}</p>
       </div>

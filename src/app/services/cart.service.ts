@@ -25,13 +25,14 @@ export class CartService {
     });
   }
 
-  addToCart(productId: number | undefined, quantity: number = 1): Observable<Cart> {
-    if (!productId) {
+  addToCart(productId: number | undefined, productName: string | undefined, quantity: number = 1): Observable<Cart> {
+    if (!productId || !productName)  {
       return throwError(() => new Error('Product ID is required'));
     }
 
     const body = {
       productId: productId,
+      productName: productName,
       quantity: quantity
     };
 

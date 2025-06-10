@@ -58,7 +58,7 @@
                     <h5 class="card-title">{{product.name}}</h5>
                     <h5 class="card-title">{{product.price}}</h5>
                     <p class="card-text">{{product.description}}</p>
-                    <a (click)="addToCart(product.id ? parseInt(product.id) : 0)" class="button-comprar" >Comprar</a>
+                    <a (click)="addToCart(product.id ? parseInt(product.id) : 0, product.name)" class="button-comprar" >Comprar</a>
                 </div>
             </div>
         </div>

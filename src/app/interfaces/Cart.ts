@@ -6,6 +6,7 @@ export interface Cart {
   userId: number;
   user?: User;
   productId: number;
+  productName?: string;
   product?: Product;
   quantity: number;
   total: number;     // Total (price * quantity)

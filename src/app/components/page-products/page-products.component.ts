@@ -46,16 +46,16 @@ export class PageProductsComponent {
     );
   }
 
-  addToCart(productId: number) {
-    this.cartService.addToCart(productId).subscribe({
+  addToCart(productId: number, productName: string | undefined): void {
+    this.cartService.addToCart(productId, productName).subscribe({
       next: (cart) => {
-        console.log('Produto adicionado ao carrinho', cart);
+        alert('Produto adicionado ao carrinho');
 
         this.router.navigate(['/cart']);
       },
       error: (err) => {
         if (err.message !== 'Usuário não autenticado') {
-          console.error('Erro ao adicionar ao carrinho', err);
+          alert('Erro ao adicionar ao carrinho, usuário precisa estar autenticado.');
           // Tratamento de erro
         }
       }
