@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of, tap, throwError} from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 import {Cart} from '../interfaces/Cart';
 import {Product} from '../../domain/product';
+import {UpdateCartRequest} from '../interfaces/UpdateCartRequest.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -53,23 +54,42 @@ export class CartService {
     );
   }
 
+  updateQuantity(request: UpdateCartRequest): Observable<Cart> {
+    return this.http.put<Cart>(`${this.apiUrl}/update-quantity`, request, { headers: this.getHeaders() }).pipe(
+      tap(response => console.log('Carrinho atualizado:', response)),
+      catchError(error => {
+        console.error('Erro ao atualizar quantidade:', error);
+        return throwError(() => new Error('Falha ao atualizar quantidade: ' + error.message));
+      })
+    );
+  }
+
+  removeCart(cartId: number): Observable<string> {
+    return this.http.delete<string>(`${this.apiUrl}/cart/${cartId}`, { headers: this.getHeaders() }).pipe(
+      catchError(error => {
+        return throwError(() => new Error(error.error?.message || 'Falha ao remover carrinho'));
+      })
+    );
+  }
+
   /**
    * Atualiza a quantidade de um produto no carrinho
    * @param productId ID do produto
    * @param quantity Nova quantidade
    */
-  updateCart(productId: number, quantity: number): Observable<Cart> {
-    const body = {
-      productId: productId,
-      quantity: quantity
-    };
-
-    return this.http.put<Cart>(
-      `${this.apiUrl}/update-quantity`,
-      body,
-      {headers: this.getHeaders()}
-    );
-  }
+  // updateCart(productId: number, quantity: number, productName: string): Observable<Cart> {
+  //   const body = {
+  //     productId: productId,
+  //     quantity: quantity,
+  //     productName: productName
+  //   };
+  //
+  //   return this.http.put<Cart>(
+  //     `${this.apiUrl}/update-quantity`,
+  //     body,
+  //     {headers: this.getHeaders()}
+  //   );
+  // }
 
   /**
    * Limpa o carrinho (remove produtos mas mantém o carrinho)
@@ -136,23 +156,23 @@ export class CartService {
   //   return this.addToCart(product.id, quantity);
   // }
 
-  /**
-   * Método para incrementar quantidade de um produto
-   */
-  incrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
-    return this.updateCart(productId, currentQuantity + 1);
-  }
+  // /**
+  //  * Método para incrementar quantidade de um produto
+  //  */
+  // incrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
+  //   return this.updateCart(productId, currentQuantity + 1);
+  // }
 
   /**
    * Método para decrementar quantidade de um produto
    */
-  decrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
-    if (currentQuantity <= 1) {
-      return throwError(() => new Error('Quantity cannot be less than 1'));
-    }
-
-    return this.updateCart(productId, currentQuantity - 1);
-  }
+  // decrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
+  //   if (currentQuantity <= 1) {
+  //     return throwError(() => new Error('Quantity cannot be less than 1'));
+  //   }
+  //
+  //   return this.updateCart(productId, currentQuantity - 1);
+  // }
 
   /**
    * Obtém o número total de itens no carrinho

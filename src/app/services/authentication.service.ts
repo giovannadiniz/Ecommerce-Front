@@ -66,7 +66,6 @@ export class AuthenticationService {
     return this.http.post<Cart>(`${this.apiCartUrl}`, { productId }, { headers });
   }
 
-  // Método para completar a ação após login
   completePendingCartAction(productId: number): Observable<Cart> {
     return this.addToCart(productId);
   }

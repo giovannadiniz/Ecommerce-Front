@@ -8,6 +8,8 @@ import {CartService} from '../../services/cart.service';
 import {Router} from '@angular/router';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
+import {Observable} from 'rxjs';
+import {Cart} from '../../interfaces/Cart';
 
 @Component({
   selector: 'app-page-products',

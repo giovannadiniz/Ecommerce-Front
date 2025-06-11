@@ -62,10 +62,6 @@ export class LoginComponent {
         this.errorMessage = 'Usuário ou senha inválidos. Tente novamente.';
       }
     });
-    }
-
-  goRegister() {
-    this.router.navigate(['/register']);
   }
 }
 
