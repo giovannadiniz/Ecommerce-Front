@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ListProductsService} from '../../services/list-products.service';
 import {Product} from '../../../domain/product';
 import {MatIconModule} from '@angular/material/icon';
@@ -8,8 +8,7 @@ import {CartService} from '../../services/cart.service';
 import {Router} from '@angular/router';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
-import {Observable} from 'rxjs';
-import {Cart} from '../../interfaces/Cart';
+import {CartComponent} from '../cart/cart.component';
 
 @Component({
   selector: 'app-page-products',
@@ -19,12 +18,14 @@ import {Cart} from '../../interfaces/Cart';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
+    CartComponent,
   ],
   providers: [ListProductsService],
   templateUrl: './page-products.component.html',
   styleUrls: ['./page-products.component.scss']
 })
 export class PageProductsComponent {
+  @ViewChild('cartModal') cartModal!: CartComponent;
   products!: Product[];
   quantities: { [key: number]: number } = {};
 
@@ -34,6 +35,14 @@ export class PageProductsComponent {
 
   ngOnInit() {
     this.getAllProducts();
+    // Inicializa as quantidades
+    this.productService.getAllProducts().subscribe(products => {
+      products.forEach(product => {
+        if (typeof product.id === 'number') {
+          this.quantities[product.id] = 1;
+        }
+      });
+    });
   }
 
   private getAllProducts(): void {
@@ -51,17 +60,18 @@ export class PageProductsComponent {
   addToCart(productId: number, productName: string | undefined): void {
     this.cartService.addToCart(productId, productName).subscribe({
       next: (cart) => {
-        alert('Produto adicionado ao carrinho');
+        this.snackBar.open('Produto adicionado ao carrinho!', 'Fechar', { duration: 2000 });
 
-        this.router.navigate(['/cart']);
+        // Abre o modal do carrinho após adicionar o produto
+        this.cartModal.openModal();
       },
       error: (err) => {
-        if (err.message !== 'Usuário não autenticado') {
-          alert('Erro ao adicionar ao carrinho, usuário precisa estar autenticado.');
-          // Tratamento de erro
-        }
+        console.error('Erro ao adicionar ao carrinho:', err);
+        this.snackBar.open(err.message || 'Erro ao adicionar ao carrinho', 'Fechar', { duration: 3000 });
       }
     });
+  }
+
 
 
     // const quantity = this.quantities[product.id] || 1;
@@ -86,7 +96,6 @@ export class PageProductsComponent {
     //     });
     //   }
     // });
-  }
 
   increaseQuantity(productId: number, stock: number): void {
     if (this.quantities[productId] < stock) {

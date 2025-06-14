@@ -4,7 +4,6 @@ import {Observable, of, tap, throwError} from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 import {Cart} from '../interfaces/Cart';
-import {Product} from '../../domain/product';
 import {UpdateCartRequest} from '../interfaces/UpdateCartRequest.interface';
 
 @Injectable({
@@ -64,10 +63,17 @@ export class CartService {
     );
   }
 
-  removeCart(cartId: number): Observable<string> {
-    return this.http.delete<string>(`${this.apiUrl}/cart/${cartId}`, { headers: this.getHeaders() }).pipe(
+  removeCart(cartId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${cartId}`, {
+      headers: this.getHeaders()
+    }).pipe(
       catchError(error => {
-        return throwError(() => new Error(error.error?.message || 'Falha ao remover carrinho'));
+        console.error('Erro ao remover carrinho:', error);
+        return throwError(() => ({
+          status: error.status,
+          message: error.error?.message || 'Falha ao remover carrinho',
+          error: error.error
+        }));
       })
     );
   }
@@ -105,22 +111,6 @@ export class CartService {
   //     catchError(this.handleError)
   //   );
   // }
-
-  /**
-   * Remove completamente o carrinho do usuário
-   */
-  // removeCart(): Observable<string> {
-  //   return this.http.delete<string>(
-  //     `${this.apiUrl}/remove`,
-  //     {
-  //       headers: this.getHeaders(),
-  //       responseType: 'text' as 'json' // Para receber string response
-  //     }
-  //   ).pipe(
-  //     catchError(this.handleError)
-  //   );
-  // }
-
   /**
    * Verifica se o usuário tem um carrinho
    */
@@ -143,36 +133,6 @@ export class CartService {
     });
   }
 
-  // /**
-  //  * Método auxiliar para adicionar produto com validação
-  //  */
-  // addProductToCart(product: Product, quantity: number = 1): Observable<Cart> {
-  //   if (!product || !product.id) {
-  //     return throwError(() => new Error('Invalid product'));
-  //   }
-  //
-  //   console.log(`Adding product ${product.id} to cart with quantity ${quantity}`);
-  //
-  //   return this.addToCart(product.id, quantity);
-  // }
-
-  // /**
-  //  * Método para incrementar quantidade de um produto
-  //  */
-  // incrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
-  //   return this.updateCart(productId, currentQuantity + 1);
-  // }
-
-  /**
-   * Método para decrementar quantidade de um produto
-   */
-  // decrementProductQuantity(productId: number, currentQuantity: number): Observable<Cart> {
-  //   if (currentQuantity <= 1) {
-  //     return throwError(() => new Error('Quantity cannot be less than 1'));
-  //   }
-  //
-  //   return this.updateCart(productId, currentQuantity - 1);
-  // }
 
   /**
    * Obtém o número total de itens no carrinho

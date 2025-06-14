@@ -29,6 +29,9 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#"
                     >
+                      <div class="products-container">
+                        <app-cart #cartModal></app-cart>
+                      </div>
                         Carrinho
                     </a>
                 </li>
@@ -57,7 +60,7 @@
                 <!-- <mat-icon class="card-icon">ink_marker</mat-icon> -->
                 <div class="card-body">
                     <h5 class="card-title">{{product.name}}</h5>
-                    <h5 class="card-title">{{product.price}}</h5>
+                  <h5 class="card-title">{{product.price | currency:'BRL':'symbol':'1.2-2'}}</h5>
                     <p class="card-text">{{product.description}}</p>
                     <a (click)="addToCart(product.id ? parseInt(product.id) : 0, product.name)" class="button-comprar" >Comprar</a>
                 </div>

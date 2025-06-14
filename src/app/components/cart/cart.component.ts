@@ -1,24 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Cart} from '../../interfaces/Cart';
 import {CartService} from '../../services/cart.service';
 import {AuthenticationService} from '../../services/authentication.service';
-import {CurrencyPipe} from '@angular/common';
+import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
 import {UpdateCartRequest} from '../../interfaces/UpdateCartRequest.interface';
 import {FormsModule} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
   imports: [
     CurrencyPipe,
-    FormsModule
+    FormsModule,
+    NgOptimizedImage,
+    MatDialogModule
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
 
 export class CartComponent implements OnInit {
+  @Input() isOpen = false;
+  @Output() closed = new EventEmitter<void>();
   cart: Cart | null = null;
   newQuantity: number = 1;
   error: string | null = null;
@@ -30,6 +34,15 @@ export class CartComponent implements OnInit {
     private authService: AuthenticationService,
     private dialog: MatDialog
   ) {
+  }
+  openModal(): void {
+    this.isOpen = true;
+    this.loadCart();
+  }
+
+  closeModal(): void {
+    this.isOpen = false;
+    this.closed.emit();
   }
 
   ngOnInit(): void {
@@ -72,22 +85,36 @@ export class CartComponent implements OnInit {
   }
 
   updateQuantity(): void {
+    if (!this.cart) {
+      this.error = 'Carrinho não carregado. Tente recarregar a página.';
+      this.successMessage = null;
+      return;
+    }
+
     if (this.newQuantity < 1) {
       this.error = 'A quantidade deve ser pelo menos 1';
       this.successMessage = null;
       return;
     }
 
-    if (!this.cart.productId || !this.cart.productName) {
-      this.error = 'Carrinho inválido. Tente recarregar a página.';
-      this.successMessage = null;
+    // Verificação adicional para propriedades obrigatórias
+    if (typeof this.cart.productId !== 'number') {
+      this.error = 'ID do produto inválido';
+      return;
+    }
+
+    // Usar productName do cart ou do product
+    const productName = this.cart.productName || this.cart.product?.name;
+    if (!productName) {
+      this.error = 'Nome do produto não disponível';
       return;
     }
 
     this.loading = true;
+
     const request: UpdateCartRequest = {
       productId: this.cart.productId,
-      productName: this.cart.productName,
+      productName: productName,
       quantity: this.newQuantity
     };
 
@@ -108,42 +135,89 @@ export class CartComponent implements OnInit {
     });
   }
 
-  removeCart(): void {
+//  Está comentado para inserir modal customizado futuramente
+  // removeCart(): void {
+  //   if (!this.authService.isAuthenticated()) {
+  //     this.error = 'Você precisa estar logado para remover o carrinho';
+  //     return;
+  //   }
+  //
+  //   if (!this.cart?.id) {
+  //     this.error = 'Carrinho não carregado ou ID inválido';
+  //     return;
+  //   }
+  //
+  //   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+  //     data: {
+  //       title: 'Confirmar Remoção',
+  //       message: 'Tem certeza que deseja remover este item do carrinho?',
+  //       confirmText: 'Remover',
+  //       cancelText: 'Cancelar'
+  //     }
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe(confirmed => {
+  //     if (confirmed) {
+  //       this.loading = true;
+  //       this.error = null;
+  //       this.successMessage = null;
+  //
+  //       this.cartService.removeCart(this.cart!.id!).subscribe({
+  //         next: () => {
+  //           this.cart = null;
+  //           this.newQuantity = 1;
+  //           this.successMessage = 'Carrinho removido com sucesso!';
+  //           this.loading = false;
+  //           this.closeModal();
+  //         },
+  //         error: (err) => {
+  //           this.error = err.message || 'Erro ao remover carrinho';
+  //           this.loading = false;
+  //           console.error('Erro detalhado:', err);
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  removeCartWithoutDialog(): void {
     if (!this.authService.isAuthenticated()) {
       this.error = 'Você precisa estar logado para remover o carrinho';
       return;
     }
 
-    if (!this.cart || !this.cart.id) {
-      this.error = 'Carrinho não carregado ou inválido';
-      this.successMessage = null;
+    if (!this.cart) {
+      this.error = 'Carrinho não carregado';
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: 'Tem certeza que deseja remover o carrinho?' }
-    });
+    // Confirmação simples com confirm()
+    const confirmRemoval = confirm('Tem certeza que deseja remover este item do carrinho?');
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loading = true;
-        this.cartService.removeCart(this.cart!.id).subscribe({
-          next: () => {
-            this.cart = null; // Define o carrinho como null após a remoção
-            this.newQuantity = 1;
-            this.successMessage = 'Carrinho removido com sucesso!';
-            this.error = null;
-            this.loading = false;
-          },
-          error: (err) => {
-            this.error = err.message || 'Erro ao remover carrinho';
-            this.successMessage = null;
-            this.loading = false;
-            console.error('Erro ao remover carrinho:', err);
-          }
-        });
-      }
-    });
+    if (confirmRemoval) {
+      this.loading = true;
+      this.error = null;
+      this.successMessage = null;
+
+      const cartId = this.cart.id || this.cart.productId;
+
+      this.cartService.removeCart(cartId).subscribe({
+        next: () => {
+          this.cart = null;
+          this.newQuantity = 1;
+          this.successMessage = 'Carrinho removido com sucesso!';
+          this.loading = false;
+
+          setTimeout(() => {
+            this.closeModal();
+          }, 1500);
+        },
+        error: (err) => {
+          this.error = err.error?.message || err.message || 'Erro ao remover carrinho';
+          this.loading = false;
+          console.error('Erro ao remover carrinho:', err);
+        }
+      });
+    }
   }
 }
 //

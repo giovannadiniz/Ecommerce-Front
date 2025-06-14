@@ -1,139 +1,98 @@
-<!--<div class="cart-container">-->
-<!--  <h2>Seu Carrinho</h2>-->
-
-<!--  @if (loading) {-->
-<!--    <div class="loading">Carregando carrinho...</div>-->
-<!--  }-->
-
-<!--  @if (error) {-->
-<!--    <div class="error">{{ error }}</div>-->
-<!--  }-->
-
-<!--  @if (!cart && !loading) {-->
-<!--    <div class="empty-cart">-->
-<!--      Seu carrinho está vazio-->
-<!--    </div>-->
-<!--  }-->
-
-<!--  @if (cart) {-->
-<!--    <div class="cart-item">-->
-<!--      <div class="product-info">-->
-<!--        <h3>{{ cart.productName }}</h3>-->
-<!--        <p>{{ cart.product?.description }}</p>-->
-<!--        <p>Preço: {{ cart.product?.price | currency:'BRL' }}</p>-->
-<!--      </div>-->
-
-<!--      <div class="quantity-control">-->
-<!--        <button-->
-<!--          (click)="decrementQuantity()"-->
-<!--          [disabled]="newQuantity <= 1 || loading"-->
-<!--        >-->
-<!--          - -->
-<!--        </button>-->
-<!--        <span>{{ cart.quantity }}</span>-->
-<!--        <button-->
-<!--          (click)="incrementQuantity()"-->
-<!--          [disabled]="loading"-->
-<!--        >-->
-<!--          +-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--      <p>Total: {{ cart.total | currency:'BRL' }}</p>-->
-<!--    </div>-->
-
-<!--    <div class="cart-actions">-->
-<!--      <button class="btn-clear">-->
-<!--        Limpar Carrinho-->
-<!--      </button>-->
-<!--      <button class="btn-remove">-->
-<!--        Remover Carrinho-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  }-->
-<!--</div>-->
-<div class="cart-container">
-  <h2>Seu Carrinho</h2>
-
-  @if (loading) {
-    <div class="alert alert-info">Carregando carrinho...</div>
-  }
-
-  @if (error) {
-    <div class="alert alert-danger">{{ error }}</div>
-  }
-
-  @if (successMessage) {
-    <div class="alert alert-success">{{ successMessage }}</div>
-  }
-
-  @if (!cart && !loading) {
-    <div class="empty-cart">Seu carrinho está vazio</div>
-  }
-
-  @if (cart) {
-    <div class="cart-item">
-      <div class="product-info">
-        <h3>{{ cart.productName }}</h3>
-        <p>{{ cart.product?.description }}</p>
-        <p>Preço: {{ cart.product?.price | currency:'BRL' }}</p>
-      </div>
-
-      <div class="quantity-control">
-        <button
-          (click)="decrementQuantity()"
-          [disabled]="newQuantity <= 1 || loading"
-        >
-          -
-        </button>
-        <input
-          type="number"
-          min="1"
-          [(ngModel)]="newQuantity"
-          (ngModelChange)="newQuantity = $event > 0 ? $event : 1"
-          [disabled]="loading"
-          style="width: 60px; text-align: center;"
-        />
-        <button
-          (click)="incrementQuantity()"
-          [disabled]="loading"
-        >
-          +
-        </button>
-      </div>
-
-      <p>Total: {{ cart.total | currency:'BRL' }}</p>
+<div class="cart-modal-overlay" [class.active]="isOpen">
+  <div class="cart-modal">
+    <div class="cart-header">
+      <h2><i class="fas fa-shopping-bag"></i> Seu Carrinho</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
     </div>
 
-    <div class="cart-actions">
-      <button
-        (click)="updateQuantity()"
-        [disabled]="loading || newQuantity === cart.quantity"
-        class="btn btn-primary"
-      >
-        {{ loading ? 'Atualizando...' : 'Atualizar Quantidade' }}
-      </button>
-      <button
-        (click)="removeCart()"
-        [disabled]="loading"
-        class="btn btn-remove"
-      >
-        Remover Carrinho
-      </button>
-<!--      <button-->
-<!--        (click)="clearCart()"-->
-<!--        [disabled]="loading"-->
-<!--        class="btn-clear"-->
-<!--      >-->
-<!--        Limpar Carrinho-->
-<!--      </button>-->
-<!--      <button-->
-<!--        (click)="removeCart()"-->
-<!--        [disabled]="loading"-->
-<!--        class="btn-remove"-->
-<!--      >-->
-<!--        Remover Carrinho-->
-<!--      </button>-->
+    <div class="cart-body">
+      @if (loading) {
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+          <span>Carregando seu carrinho...</span>
+        </div>
+      }
+
+      @if (error) {
+        <div class="alert alert-error">
+          <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="alert alert-success">
+          <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+      }
+
+      @if (!cart && !loading) {
+        <div class="empty-cart">
+          <i class="fas fa-heart"></i>
+          <p>Seu carrinho está vazio</p>
+          <button class="btn-continue" (click)="closeModal()">Continuar Comprando</button>
+        </div>
+      }
+
+      @if (cart) {
+        <div class="cart-item">
+          <div class="product-image">
+           <img [ngSrc]="cart.product?.imageUrl ?? '/assets/makes.png'" alt="{{ cart.productName }}">
+          </div>
+
+          <div class="product-details">
+            <h3>{{ cart.productName }}</h3>
+            <p class="description">{{ cart.product?.description }}</p>
+            <p class="price">{{ cart.product?.price | currency:'BRL' }}</p>
+          </div>
+
+          <div class="quantity-control">
+            <button class="qty-btn" (click)="decrementQuantity()" [disabled]="newQuantity <= 1 || loading">
+              <i class="fas fa-minus"></i>
+            </button>
+            <input type="number" min="1" [(ngModel)]="newQuantity"
+                   (ngModelChange)="newQuantity = $event > 0 ? $event : 1"
+                   [disabled]="loading">
+            <button class="qty-btn" (click)="incrementQuantity()" [disabled]="loading">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+
+          <div class="item-total">
+            <p>Total</p>
+            <p class="total-price">{{ cart.total | currency:'BRL' }}</p>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart.total | currency:'BRL' }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Frete</span>
+            <span>Grátis</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>{{ cart.total | currency:'BRL' }}</span>
+          </div>
+        </div>
+
+        <div class="cart-actions">
+          <button class="btn-update" (click)="updateQuantity()"
+                  [disabled]="loading || newQuantity === cart.quantity">
+            <i class="fas fa-sync-alt"></i> {{ loading ? 'Atualizando...' : 'Atualizar' }}
+          </button>
+          <button class="btn-remove" (click)="removeCartWithoutDialog()"  [disabled]="loading">
+            <i class="fas fa-trash-alt">
+              {{ loading ? 'Removendo...' : '' }}
+            </i> Remover
+          </button>
+          <button class="btn-checkout">
+            <i class="fas fa-credit-card"></i> Finalizar Compra
+          </button>
+        </div>
+      }
     </div>
-  }
+  </div>
 </div>
