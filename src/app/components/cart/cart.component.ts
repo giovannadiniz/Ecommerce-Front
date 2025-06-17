@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 import {CheckoutRequest, CheckoutResponse, CheckoutService} from '../../services/checkout.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CheckoutComponent} from '../checkout/checkout.component';
+import {ApiResponseModalComponent} from '../api-response-modal/api-response-modal.component';
 
 @Component({
   selector: 'app-cart',
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit {
   error: string | null = null;
   successMessage: string | null = null;
   loading: boolean = false;
+  apiResponse: any;
 
   constructor(
     private cartService: CartService,
@@ -46,6 +48,17 @@ export class CartComponent implements OnInit {
   openModal(): void {
     this.isOpen = true;
     this.loadCart();
+  }
+
+  showApiResponseModal() {
+    this.dialog.open(ApiResponseModalComponent, {
+      width: '80%',
+      maxWidth: '800px',
+      data: {
+        response: this.apiResponse,
+      },
+      panelClass: 'api-response-modal'
+    });
   }
 
   closeModal(): void {
