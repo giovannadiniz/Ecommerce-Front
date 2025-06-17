@@ -1,0 +1,97 @@
+<div class="checkout-container">
+  @if (loading) {
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Processando seu pedido...</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error">
+      <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+  }
+
+  @if (checkoutData) {
+    <div class="checkout-details">
+      <h2>
+        <i class="fas fa-receipt"></i>
+        @if (checkoutData.id) {
+          Seu Pedido #{{ checkoutData.id }}
+        } @else {
+          Pedido em Processamento
+        }
+      </h2>
+
+      <div class="order-info">
+        <div class="info-row">
+          <strong>Status:</strong>
+          <span class="status" [class]="'status-' + checkoutData.status.toLowerCase()">
+            {{ checkoutData.status }}
+          </span>
+        </div>
+
+        <div class="info-row">
+          <strong>Total:</strong>
+          <span class="amount">{{ checkoutData.total | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+        </div>
+
+        <div class="info-row">
+          <strong>Quantidade:</strong> {{ checkoutData.quantity }}
+        </div>
+
+        <div class="info-row">
+          <strong>Produto:</strong> {{ checkoutData.product.name }}
+        </div>
+      </div>
+
+      @if (checkoutData.qrCode) {
+        <div class="pix-payment">
+          <h3><i class="fas fa-qrcode"></i> Pagamento via PIX</h3>
+
+          <div class="qr-code-section">
+            @if (checkoutData.qrCodeImage) {
+              <img [src]="checkoutData.qrCodeImage" alt="QR Code PIX" class="qr-image">
+            } @else {
+              <!-- Gera QR Code usando serviço online -->
+              <img [src]="generateQRCodeImage()" alt="QR Code PIX" class="qr-image">
+            }
+          </div>
+
+          <div class="pix-code-section">
+            <label><strong>Código PIX:</strong></label>
+            <div class="code-container">
+              <textarea
+                readonly
+                class="pix-code-text"
+                [value]="checkoutData.qrCode"
+                rows="3">
+              </textarea>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-copy" (click)="copiarPixCode()">
+              <i class="fas fa-copy"></i> Copiar Código PIX
+            </button>
+
+            <button class="btn btn-check-status" (click)="consultarStatus()">
+              <i class="fas fa-sync-alt"></i> Verificar Status
+            </button>
+          </div>
+
+          <div class="payment-instructions">
+            <h4><i class="fas fa-info-circle"></i> Como pagar:</h4>
+            <ol>
+              <li>Abra o app do seu banco</li>
+              <li>Escolha a opção PIX</li>
+              <li>Escaneie o QR Code ou cole o código copiado</li>
+              <li>Confirme o pagamento</li>
+              <li>Volte aqui e clique em "Verificar Status"</li>
+            </ol>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
