@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import { User } from '../../domain/user';
 import {Observable, tap, throwError} from 'rxjs';
 import { LoginResponse } from '../interfaces/LoginResponse';
@@ -7,17 +7,20 @@ import { LoginRequest } from '../interfaces/LoginRequest';
 import {Cart} from '../interfaces/Cart';
 import {Router} from '@angular/router';
 import {NavigationState} from '../interfaces/NavigationState';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import {isPlatformBrowser} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private jwtHelper = new JwtHelperService();
   private readonly apiUrl = 'http://localhost:8080/ecommerce/auth';
   private readonly apiCartUrl = 'http://localhost:8080/ecommerce/cart';
   private tokenKey = 'auth_token';
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,  @Inject(PLATFORM_ID) private platformId: Object) { }
 
       registerUser(userData: User): Observable<User> {
        return this.http.post<User>(`${this.apiUrl}/register`, userData);
@@ -31,19 +34,36 @@ export class AuthenticationService {
       }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(this.tokenKey);
+    }
+    return null;
+  }
+
+  logout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.tokenKey);
+    }
+    window.location.href = '/login';
   }
 
   setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.tokenKey, token);
+    }
   }
 
   removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.tokenKey);
+    }
   }
 
   isAuthenticated(): boolean {
-    return this.getToken() !== null;
+    if (isPlatformBrowser(this.platformId)) {
+      return this.getToken() !== null;
+    }
+    return false;
   }
 
   // Método para adicionar ao carrinho com verificação de autenticação
@@ -54,7 +74,7 @@ export class AuthenticationService {
           returnUrl: this.router.url,
           intent: 'add-to-cart',
           productId: productId
-        } as NavigationState // Cast para o tipo correto
+        } as NavigationState
       });
       return throwError(() => new Error('Usuário não autenticado'));
     }
@@ -69,4 +89,22 @@ export class AuthenticationService {
   completePendingCartAction(productId: number): Observable<Cart> {
     return this.addToCart(productId);
   }
+
+  // isTokenExpired(): boolean {
+  //   const token = this.getToken();
+  //   if (!token) return true;
+  //
+  //   try {
+  //     // Decodifica o token JWT manualmente
+  //     const payload = JSON.parse(atob(token.split('.')[1]));
+  //     const exp = payload.exp;
+  //     const now = Date.now() / 1000; // Timestamp em segundos
+  //
+  //     // Adiciona margem de segurança de 10 segundos
+  //     return exp < now - 10;
+  //   } catch (e) {
+  //     console.error('Erro ao decodificar token:', e);
+  //     return true;
+  //   }
+  // }
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Cart} from '../../interfaces/Cart';
 import {CartService} from '../../services/cart.service';
 import {AuthenticationService} from '../../services/authentication.service';
@@ -6,6 +6,10 @@ import {CurrencyPipe, NgOptimizedImage} from '@angular/common';
 import {UpdateCartRequest} from '../../interfaces/UpdateCartRequest.interface';
 import {FormsModule} from '@angular/forms';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {CheckoutRequest, CheckoutResponse, CheckoutService} from '../../services/checkout.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CheckoutComponent} from '../checkout/checkout.component';
 
 @Component({
   selector: 'app-cart',
@@ -21,6 +25,7 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 })
 
 export class CartComponent implements OnInit {
+  @ViewChild('checkoutModal') checkoutModal!: CheckoutComponent;
   @Input() isOpen = false;
   @Output() closed = new EventEmitter<void>();
   cart: Cart | null = null;
@@ -32,7 +37,10 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private authService: AuthenticationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router,
+    private checkoutService: CheckoutService,
+    private snackBar: MatSnackBar
   ) {
   }
   openModal(): void {
@@ -135,6 +143,75 @@ export class CartComponent implements OnInit {
     });
   }
 
+  finalizarCompra(): void {
+    if (!this.cart) {
+      this.snackBar.open('Carrinho não carregado', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    // Validação dos campos obrigatórios
+    if (!this.cart.id || !this.cart.productId || !this.cart.userId) {
+      this.snackBar.open('Dados incompletos para finalizar compra', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    // Verifica se o total está calculado
+    if (this.cart.total === undefined || this.cart.total === null) {
+      this.snackBar.open('Total do carrinho não calculado', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    this.loading = true;
+
+    // Preparação dos dados com tipos corretos
+    const checkoutData: CheckoutRequest = {
+      cartId: this.cart.id,
+      productId: this.cart.productId,
+      total: this.formatTotal(this.cart.total), // Conversão para string formatada
+      quantity: this.cart.quantity,
+      userId: this.cart.userId
+    };
+
+    this.checkoutService.processarCheckout(checkoutData).subscribe({
+      next: (response) => {
+        this.loading = false;
+        this.handleCheckoutSuccess(response);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.handleCheckoutError(err);
+      }
+    });
+  }
+
+// Método auxiliar para formatar o total como string
+  private formatTotal(total: number): string {
+    // Formata para 2 casas decimais e converte para string
+    return total.toFixed(2);
+  }
+
+  private handleCheckoutSuccess(response: CheckoutResponse): void {
+    this.snackBar.open('Pedido criado com sucesso!', 'Fechar', { duration: 2000 });
+    this.openCheckoutModal(response);
+    this.cart = null; // Limpa o carrinho após sucesso
+  }
+
+  private handleCheckoutError(err: any): void {
+    console.error('Erro ao finalizar compra:', err);
+    const errorMessage = err.error?.message || err.message || 'Erro ao finalizar compra';
+    this.snackBar.open(errorMessage, 'Fechar', { duration: 3000 });
+  }
+
+  private openCheckoutModal(checkoutResponse: CheckoutResponse): void {
+    const dialogRef = this.dialog.open(CheckoutComponent, {
+      width: '600px',
+      data: {checkoutData: checkoutResponse}
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Ações após fechar o modal, se necessário
+    });
+  }
 //  Está comentado para inserir modal customizado futuramente
   // removeCart(): void {
   //   if (!this.authService.isAuthenticated()) {
@@ -179,6 +256,7 @@ export class CartComponent implements OnInit {
   //     }
   //   });
   // }
+
   removeCartWithoutDialog(): void {
     if (!this.authService.isAuthenticated()) {
       this.error = 'Você precisa estar logado para remover o carrinho';
@@ -219,6 +297,12 @@ export class CartComponent implements OnInit {
       });
     }
   }
+
+  // finalizarCompra() {
+  //   // Navegar para página de checkout passando dados via query params
+  //   this.router.navigate(['/checkout', this.cartId, this.productId, this.total]);
+  // }
+  protected readonly parseInt = parseInt;
 }
 //
 //   clearCart(): void {

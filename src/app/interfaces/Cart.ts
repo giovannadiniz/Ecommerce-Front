@@ -2,7 +2,7 @@ import {Product} from '../../domain/product';
 import {User} from '../../domain/user';
 
 export interface Cart {
-  id?: number;
+  id: number;
   userId: number;
   user?: User;
   productId: number;

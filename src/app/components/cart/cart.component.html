@@ -88,8 +88,9 @@
               {{ loading ? 'Removendo...' : '' }}
             </i> Remover
           </button>
-          <button class="btn-checkout">
-            <i class="fas fa-credit-card"></i> Finalizar Compra
+          <button class="btn-checkout" (click)="finalizarCompra()" [disabled]="loading || !cart">
+            <i class="fas fa-credit-card"></i>
+            {{ loading ? 'Processando...' : 'Finalizar Compra' }}
           </button>
         </div>
       }
