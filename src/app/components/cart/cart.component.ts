@@ -218,8 +218,10 @@ export class CartComponent implements OnInit {
   private openCheckoutModal(checkoutResponse: CheckoutResponse): void {
     const dialogRef = this.dialog.open(CheckoutComponent, {
       width: '600px',
-      data: {checkoutData: checkoutResponse}
     });
+
+    dialogRef.componentInstance.checkoutData = checkoutResponse;
+
 
     dialogRef.afterClosed().subscribe(() => {
       // Ações após fechar o modal, se necessário

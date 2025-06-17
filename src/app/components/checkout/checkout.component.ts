@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {CheckoutRequest, CheckoutResponse, CheckoutService} from '../../services/checkout.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -24,10 +24,11 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private checkoutService: CheckoutService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog // Injete o MatDialog
+    private dialog: MatDialog, // Injete o MatDialog
   ) {}
 
   ngOnInit() {
+    console.log(this.checkoutData)
     if (!this.checkoutData) {
       this.error = 'Dados de checkout não fornecidos';
     } else {

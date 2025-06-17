@@ -33,16 +33,13 @@
 
         <div class="info-row">
           <strong>Total:</strong>
-          <span class="amount">{{ checkoutData.total | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+          <span class="amount">{{ checkoutData.total | currency:'BRL':'symbol':'1.2-2'}}</span>
         </div>
 
         <div class="info-row">
           <strong>Quantidade:</strong> {{ checkoutData.quantity }}
         </div>
 
-        <div class="info-row">
-          <strong>Produto:</strong> {{ checkoutData.product.name }}
-        </div>
       </div>
 
       @if (checkoutData.qrCode) {
