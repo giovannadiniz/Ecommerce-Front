@@ -4,6 +4,7 @@ import {RegisterComponent} from './components/register/register.component';
 import { PageProductsComponent } from './components/page-products/page-products.component';
 import {CartComponent} from './components/cart/cart.component';
 import {CheckoutComponent} from './components/checkout/checkout.component';
+import {ListOrdersComponent} from './components/list-orders/list-orders.component';
 
 export const routes: Routes = [
   {
@@ -30,5 +31,10 @@ export const routes: Routes = [
     path: 'checkout',
     component: CheckoutComponent,
     title: 'Checkout'
+  },
+  {
+    path: 'pedidos',
+    component: ListOrdersComponent,
+    title: 'Pedidos'
   }
 ];

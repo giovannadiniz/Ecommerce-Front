@@ -40,6 +40,22 @@ export class AuthenticationService {
     return null;
   }
 
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      return this.jwtHelper.isTokenExpired(token);
+    } catch (e) {
+      console.error('Erro ao verificar token:', e);
+      return true;
+    }
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticated() && !this.isTokenExpired();
+  }
+
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.tokenKey);

@@ -1,0 +1,208 @@
+// Variáveis do tema rosa
+$primary-color: #e83e8c; // Rosa vibrante
+$secondary-color: #ff69b4; // Rosa médio
+$light-pink: #fff0f6; // Rosa muito claro
+$dark-pink: #c2185b; // Rosa escuro
+$text-color: #495057; // Cor do texto principal
+$border-color: #f8bbd0; // Rosa claro para bordas
+
+// Estilos base
+.container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: $text-color;
+}
+
+h2 {
+  color: $dark-pink;
+  font-weight: 600;
+  border-bottom: 2px solid $border-color;
+  padding-bottom: 0.5rem;
+}
+
+// Estados de carregamento e vazio
+.text-center {
+  .spinner-border.text-primary {
+    color: $primary-color !important;
+  }
+
+  .text-muted {
+    color: lighten($text-color, 30%) !important;
+  }
+
+  .btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover {
+      background-color: $dark-pink;
+      border-color: $dark-pink;
+    }
+  }
+}
+
+// Alertas
+.alert-danger {
+  background-color: lighten(#dc3545, 40%);
+  border-color: lighten(#dc3545, 30%);
+
+  .btn-outline-danger {
+    &:hover {
+      background-color: #dc3545;
+    }
+  }
+}
+
+// Cards de pedidos
+.card {
+  border-color: $border-color;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba($primary-color, 0.1);
+  }
+
+  .card-header {
+    background-color: $light-pink !important;
+    border-bottom-color: $border-color;
+  }
+
+  .card-footer {
+    background-color: $light-pink !important;
+    border-top-color: $border-color;
+  }
+}
+
+// Badges de status
+.badge {
+  &[class*="bg-"] {
+    padding: 0.35em 0.65em;
+    font-weight: 500;
+  }
+
+  &.bg-success {
+    background-color: lighten(#28a745, 10%) !important;
+  }
+
+  &.bg-warning {
+    background-color: lighten(#ffc107, 5%) !important;
+    color: darken(#ffc107, 40%) !important;
+  }
+
+  &.bg-danger {
+    background-color: lighten(#dc3545, 10%) !important;
+  }
+
+  &.bg-secondary {
+    background-color: lighten($secondary-color, 20%) !important;
+    color: white;
+  }
+}
+
+// Botões
+.btn {
+  &-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover, &:focus {
+      background-color: $dark-pink;
+      border-color: $dark-pink;
+    }
+  }
+
+  &-outline-primary {
+    color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover, &:focus {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+
+  &-outline-secondary {
+    color: $secondary-color;
+    border-color: $secondary-color;
+
+    &:hover, &:focus {
+      background-color: $secondary-color;
+      color: white;
+    }
+  }
+
+  &-outline-danger {
+    &:hover, &:focus {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+
+  &-outline-success {
+    &:hover, &:focus {
+      background-color: #28a745;
+      color: white;
+    }
+  }
+}
+
+// Seção de total do pedido
+.bg-light {
+  background-color: $light-pink !important;
+}
+
+.text-primary {
+  color: $primary-color !important;
+}
+
+// QR Code section
+.border {
+  border-color: $border-color !important;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-group {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .btn {
+      flex: 1 0 auto;
+    }
+  }
+}
+
+// Efeitos de hover para elementos interativos
+button, .btn, [role="button"] {
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+// Input group para código PIX
+.input-group {
+  .form-control {
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+    }
+  }
+
+  .btn-outline-secondary {
+    &:hover {
+      background-color: $secondary-color;
+      border-color: $secondary-color;
+    }
+  }
+}
+
+// Ícones
+.fas, .fa {
+  margin-right: 0.3rem;
+}

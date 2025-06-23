@@ -57,6 +57,11 @@ export class PageProductsComponent {
     );
   }
 
+  ngAfterViewInit() {
+    // ViewChild estará disponível aqui
+    console.log('CartModal ViewChild:', this.cartModal);
+  }
+
   addToCart(productId: number, productName: string | undefined): void {
     this.cartService.addToCart(productId, productName).subscribe({
       next: (cart) => {
