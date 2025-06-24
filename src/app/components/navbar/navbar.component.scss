@@ -1,0 +1,69 @@
+
+// Cores do tema
+$primary-color: #ff6b9d; // Rosa principal
+$secondary-color: #ff8fab; // Rosa mais claro
+$dark-pink: #d44d7c; // Rosa mais escuro
+$light-pink: #ffdfeb; // Rosa muito claro
+$white: #ffffff;
+$light-gray: #f8f9fa;
+$dark-gray: #343a40;
+
+// Fontes
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+/* Estilos Gerais */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: $white;
+  color: $dark-gray;
+}
+
+/* Menu Navbar */
+.menu {
+  background: linear-gradient(135deg, $primary-color, $dark-pink);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: $white;
+    letter-spacing: 1px;
+  }
+
+  .navbar-toggler {
+    border-color: rgba($white, 0.5);
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+  }
+
+  .nav-link {
+    color: $white;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      color: $light-pink;
+    }
+
+    &.fw-bold {
+      font-weight: 600 !important;
+    }
+  }
+
+  .navbar-nav .nav-link.active {
+    color: $white;
+    font-weight: 600;
+  }
+}
+
+/* Container Principal */
+.container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}

@@ -1,0 +1,17 @@
+// Cores do tema
+$primary-color: #ff6b9d; // Rosa principal
+$secondary-color: #ff8fab; // Rosa mais claro
+$dark-pink: #d44d7c; // Rosa mais escuro
+$light-pink: #ffdfeb; // Rosa muito claro
+$white: #ffffff;
+$light-gray: #f8f9fa;
+$dark-gray: #343a40;
+
+
+.footer {
+  background: linear-gradient(135deg, $dark-gray, lighten($dark-gray, 10%));
+
+  span {
+    font-size: 0.9rem;
+  }
+}
