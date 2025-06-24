@@ -13,7 +13,7 @@ import {CartComponent} from '../cart/cart.component';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  isLoggedIn = false;
+  isLoggedIn = true;
 
   constructor(
     private authService: AuthenticationService,
