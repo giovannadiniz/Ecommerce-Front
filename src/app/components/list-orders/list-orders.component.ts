@@ -6,6 +6,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 import {NgClass, CurrencyPipe, DatePipe, DecimalPipe} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {ListProductsService} from '../../services/list-products.service';
+import {NavbarComponent} from '../navbar/navbar.component';
+import {FooterComponent} from '../footer/footer.component';
 
 @Component({
   selector: 'app-list-orders',
@@ -15,7 +17,9 @@ import {ListProductsService} from '../../services/list-products.service';
     CurrencyPipe,
     DatePipe,
     RouterLink,
-    DecimalPipe
+    DecimalPipe,
+    NavbarComponent,
+    FooterComponent
   ],
   templateUrl: './list-orders.component.html',
   styleUrl: './list-orders.component.scss'

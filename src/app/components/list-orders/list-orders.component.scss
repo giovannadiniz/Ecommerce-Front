@@ -10,6 +10,8 @@ $border-color: #f8bbd0; // Rosa claro para bordas
 .container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: $text-color;
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
@@ -205,4 +207,11 @@ button, .btn, [role="button"] {
 // Ícones
 .fas, .fa {
   margin-right: 0.3rem;
+}
+
+app-footer{
+  z-index: 1000;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
 }

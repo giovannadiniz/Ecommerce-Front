@@ -152,15 +152,6 @@ body {
   }
 }
 
-/* Footer */
-.footer {
-  background: linear-gradient(135deg, $dark-gray, lighten($dark-gray, 10%));
-
-  span {
-    font-size: 0.9rem;
-  }
-}
-
 /* Responsividade */
 @media (max-width: 768px) {
   .menu {
@@ -192,4 +183,9 @@ body {
     width: 100% !important;
     max-width: 300px;
   }
+}
+
+
+app-footer{
+  z-index: 1000;
 }

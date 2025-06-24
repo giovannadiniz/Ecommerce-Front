@@ -9,6 +9,8 @@ import {Router} from '@angular/router';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
 import {CartComponent} from '../cart/cart.component';
+import {NavbarComponent} from '../navbar/navbar.component';
+import {FooterComponent} from '../footer/footer.component';
 
 @Component({
   selector: 'app-page-products',
@@ -19,6 +21,8 @@ import {CartComponent} from '../cart/cart.component';
     MatButtonModule,
     MatSnackBarModule,
     CartComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   providers: [ListProductsService],
   templateUrl: './page-products.component.html',
