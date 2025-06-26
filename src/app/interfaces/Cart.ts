@@ -9,5 +9,5 @@ export interface Cart {
   productName?: string;
   product?: Product;
   quantity: number;
-  total?: number;     // Total (price * quantity)
+  total?: number;
 }

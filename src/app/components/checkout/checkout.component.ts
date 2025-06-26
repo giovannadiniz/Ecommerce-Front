@@ -24,7 +24,6 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private checkoutService: CheckoutService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog, // Injete o MatDialog
   ) {}
 
   ngOnInit() {
@@ -32,7 +31,7 @@ export class CheckoutComponent implements OnInit {
     if (!this.checkoutData) {
       this.error = 'Dados de checkout não fornecidos';
     } else {
-      this.apiResponse = this.checkoutData; // Ou obtenha a resposta completa de onde você precisa
+      this.apiResponse = this.checkoutData; // resposta completa de onde preciso
     }
   }
 
@@ -102,38 +101,9 @@ export class CheckoutComponent implements OnInit {
       });
     }
   }
-  //
-  // loadCheckoutData(id: string) {
-  //   this.loading = true;
-  //   this.error = null;
-  //
-  //   console.log('Carregando dados do checkout para ID:', id);
-  //
-  //   this.checkoutService.getCheckoutById(id).subscribe({
-  //     next: (data: CheckoutResponse) => {
-  //       console.log('Dados recebidos do servidor:', data);
-  //       this.checkoutData = data;
-  //       this.loading = false;
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao carregar checkout:', err);
-  //       this.error = 'Erro ao carregar os dados do pedido';
-  //       this.loading = false;
-  //     }
-  //   });
-  // }
 
-  // consultarStatus() {
-  //   if (this.checkoutData && this.route.snapshot.paramMap.get('id')) {
-  //     const checkoutId = this.route.snapshot.paramMap.get('id')!;
-  //     this.loadCheckoutData(checkoutId);
-  //   }
-  // }
-
-  // Método para gerar QR Code usando uma biblioteca online (opcional)
   generateQRCodeImage(): string {
     if (this.checkoutData?.qrCode) {
-      // Usando QR Server (serviço gratuito) - você pode trocar por outro serviço
       return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(this.checkoutData.qrCode)}`;
     }
     return '';

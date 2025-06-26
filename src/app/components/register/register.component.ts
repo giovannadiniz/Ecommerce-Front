@@ -42,66 +42,26 @@ export class RegisterComponent {
       role: 'ADMIN'
     };
 
-    this.authService.registerUser(userData).subscribe({
-      next: (response) => {
-        console.log('Registro bem-sucedido:', response);
-        this.successMessage = 'Registro realizado com sucesso! Redirecionando para o login...';
-        // Redireciona para o login após 2 segundos para mostrar a mensagem de sucesso
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
-      },
-      error: (err) => {
-        console.error('Erro no registro:', err);
-        if (err.status === 400) {
-          this.errorMessage = 'Usuário já existe. Escolha outro nome de usuário.';
-        } else {
-          this.errorMessage = 'Erro ao registrar. Tente novamente.';
-        }
-      }
-    });
-  }
+     this.authService.registerUser(userData).subscribe({
+       next: (response) => {
+         alert('✅ Cadastro realizado com sucesso!\nVocê será redirecionado para a página de login.');
+         this.router.navigate(['/login']);
+       },
+       error: (err) => {
+         let errorMsg = '❌ Erro no cadastro:\n';
 
-  //   this.authService.registerUser(userData).subscribe({
-  //     next: (response) => {
-  //       console.log('Registro bem-sucedido:', response);
-  //       this.router.navigate(['/login']);
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro no registro:', err);
-  //       this.errorMessage = err.error?.message || 'Erro ao registrar. Tente novamente.';
-  //     }
-  //   });
-  // }
+         if (err.status === 400) {
+           errorMsg += 'Dados inválidos. Verifique as informações.';
+         } else {
+           errorMsg += 'Campos inválidos. Verifique as informações e Tente novamente.';
+         }
+
+         alert(errorMsg);
+       }
+     });
+   }
 
   passwordsMatch(): boolean {
     return this.password === this.confirmPassword;
   }
 }
-
-
-//     ngOnInit(){
-//       this.registerUser();
-//     }
-
-//     registerUser(user: User){
-//         this.user = new User;
-//       }
-//     }
-
-
-//   onSubmit() {
-//     console.log('Registration data:', {
-//       fullName: this.fullName,
-//       username: this.username,
-//       email: this.email,
-//       phone: this.phone,
-//       password: this.password
-//     });
-//     // Adicione aqui a lógica de registro
-//   }
-
-//   passwordsMatch(): boolean {
-//     return this.password === this.confirmPassword;
-//   }
-// }

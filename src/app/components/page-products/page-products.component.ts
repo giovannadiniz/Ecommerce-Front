@@ -34,7 +34,6 @@ export class PageProductsComponent {
   quantities: { [key: number]: number } = {};
 
   constructor(private productService: ListProductsService, private authService: AuthenticationService, private cartService: CartService, private router: Router, private snackBar: MatSnackBar) {
-    // Injeção de dependências para serviços necessários
   }
 
   ngOnInit() {
@@ -61,11 +60,6 @@ export class PageProductsComponent {
     );
   }
 
-  ngAfterViewInit() {
-    // ViewChild estará disponível aqui
-    console.log('CartModal ViewChild:', this.cartModal);
-  }
-
   addToCart(productId: number, productName: string | undefined): void {
     this.cartService.addToCart(productId, productName).subscribe({
       next: (cart) => {
@@ -81,30 +75,6 @@ export class PageProductsComponent {
     });
   }
 
-
-
-    // const quantity = this.quantities[product.id] || 1;
-    //
-    // if (quantity < 1 || quantity > product.quantityP) {
-    //   this.snackBar.open('Quantidade inválida', 'Fechar', {
-    //     duration: 3000
-    //   });
-    //   return;
-    // }
-
-    // this.cartService.addToCart(product.id, quantity).subscribe({
-    //   next: () => {
-    //     this.snackBar.open('Produto adicionado ao carrinho!', 'Fechar', {
-    //       duration: 2000
-    //     });
-    //   },
-    //   error: (err) => {
-    //     console.error('Erro ao adicionar ao carrinho:', err);
-    //     this.snackBar.open('Erro ao adicionar ao carrinho', 'Fechar', {
-    //       duration: 3000
-    //     });
-    //   }
-    // });
 
   increaseQuantity(productId: number, stock: number): void {
     if (this.quantities[productId] < stock) {

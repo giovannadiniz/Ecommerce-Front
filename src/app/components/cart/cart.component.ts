@@ -118,13 +118,11 @@ export class CartComponent implements OnInit {
       return;
     }
 
-    // Verificação adicional para propriedades obrigatórias
     if (typeof this.cart.productId !== 'number') {
       this.error = 'ID do produto inválido';
       return;
     }
 
-    // Usar productName do cart ou do product
     const productName = this.cart.productName || this.cart.product?.name;
     if (!productName) {
       this.error = 'Nome do produto não disponível';
@@ -180,7 +178,7 @@ export class CartComponent implements OnInit {
     const checkoutData: CheckoutRequest = {
       cartId: this.cart.id,
       productId: this.cart.productId,
-      total: this.formatTotal(this.cart.total), // Conversão para string formatada
+      total: this.formatTotal(this.cart.total),
       quantity: this.cart.quantity,
       userId: this.cart.userId
     };
@@ -197,9 +195,8 @@ export class CartComponent implements OnInit {
     });
   }
 
-// Método auxiliar para formatar o total como string
+
   private formatTotal(total: number): string {
-    // Formata para 2 casas decimais e converte para string
     return total.toFixed(2);
   }
 
@@ -227,50 +224,6 @@ export class CartComponent implements OnInit {
       // Ações após fechar o modal, se necessário
     });
   }
-//  Está comentado para inserir modal customizado futuramente
-  // removeCart(): void {
-  //   if (!this.authService.isAuthenticated()) {
-  //     this.error = 'Você precisa estar logado para remover o carrinho';
-  //     return;
-  //   }
-  //
-  //   if (!this.cart?.id) {
-  //     this.error = 'Carrinho não carregado ou ID inválido';
-  //     return;
-  //   }
-  //
-  //   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-  //     data: {
-  //       title: 'Confirmar Remoção',
-  //       message: 'Tem certeza que deseja remover este item do carrinho?',
-  //       confirmText: 'Remover',
-  //       cancelText: 'Cancelar'
-  //     }
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(confirmed => {
-  //     if (confirmed) {
-  //       this.loading = true;
-  //       this.error = null;
-  //       this.successMessage = null;
-  //
-  //       this.cartService.removeCart(this.cart!.id!).subscribe({
-  //         next: () => {
-  //           this.cart = null;
-  //           this.newQuantity = 1;
-  //           this.successMessage = 'Carrinho removido com sucesso!';
-  //           this.loading = false;
-  //           this.closeModal();
-  //         },
-  //         error: (err) => {
-  //           this.error = err.message || 'Erro ao remover carrinho';
-  //           this.loading = false;
-  //           console.error('Erro detalhado:', err);
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
 
   removeCartWithoutDialog(): void {
     if (!this.authService.isAuthenticated()) {
@@ -283,7 +236,6 @@ export class CartComponent implements OnInit {
       return;
     }
 
-    // Confirmação simples com confirm()
     const confirmRemoval = confirm('Tem certeza que deseja remover este item do carrinho?');
 
     if (confirmRemoval) {
@@ -313,42 +265,8 @@ export class CartComponent implements OnInit {
     }
   }
 
-  // finalizarCompra() {
-  //   // Navegar para página de checkout passando dados via query params
-  //   this.router.navigate(['/checkout', this.cartId, this.productId, this.total]);
-  // }
+
   protected readonly parseInt = parseInt;
 }
-//
-//   clearCart(): void {
-//     this.loading = true;
-//     this.cartService.clearCart().subscribe({
-//       next: () => {
-//         this.cart = null;
-//         this.loading = false;
-//       },
-//       error: (err) => {
-//         this.error = 'Erro ao limpar o carrinho';
-//         this.loading = false;
-//         console.error(err);
-//       }
-//     });
-//   }
-//
-//   removeCart(): void {
-//     this.loading = true;
-//     this.cartService.removeCart().subscribe({
-//       next: () => {
-//         this.cart = null;
-//         this.loading = false;
-//       },
-//       error: (err) => {
-//         this.error = 'Erro ao remover o carrinho';
-//         this.loading = false;
-//         console.error(err);
-//       }
-//     });
-//   }
-//   protected readonly parseInt = parseInt;
-// }
+
 

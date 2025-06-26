@@ -30,7 +30,7 @@ export interface CheckoutResponse {
   providedIn: 'root'
 })
 export class CheckoutService {
-  private apiUrl = 'http://localhost:8080/ecommerce'; // Ajuste conforme sua URL
+  private apiUrl = 'http://localhost:8080/ecommerce';
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
@@ -43,7 +43,7 @@ export class CheckoutService {
   }
 
   getCheckoutById(id: string): Observable<CheckoutResponse> {
-    const headers = this.getHeaders(); // ou como você faz a autenticação
+    const headers = this.getHeaders();
     return this.http.get<CheckoutResponse>(`${this.apiUrl}/checkout/${id}`, { headers });
   }
 
@@ -60,7 +60,7 @@ export class CheckoutService {
       `${this.apiUrl}/checkout/processar`,
       {
         ...checkoutData,
-        idCart: checkoutData.cartId // Garante que o campo está com o nome esperado pelo backend
+        idCart: checkoutData.cartId
       },
       { headers: this.getHeaders() }
     ).pipe(
@@ -81,18 +81,10 @@ export class CheckoutService {
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Erro desconhecido';
     if (error.error instanceof ErrorEvent) {
-      // Erro do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro do servidor
       errorMessage = `Código: ${error.status}\nMensagem: ${error.message}`;
 
-      // Tratamento específico para 403
-      // if (error.status === 403) {
-      //   errorMessage = 'Acesso negado. Verifique suas credenciais.';
-      //   // Opcional: fazer logout se o token for inválido
-      //   this.authService.logout();
-      // }
     }
     return throwError(() => new Error(errorMessage));
   }

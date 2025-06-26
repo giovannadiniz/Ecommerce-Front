@@ -1,9 +1,9 @@
 export interface Product {
-  id?: string;        // ID do produto (opcional para criação)
+  id?: string;
   name?: string;
   description?: string;
-  price?: number;       // BigDecimal do Java será convertido para number
+  price?: number;
   quantityP?: number;
   active?: boolean;
-  imageUrl?: string;   // URL da imagem do produto
+  imageUrl?: string;
 }

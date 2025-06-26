@@ -19,10 +19,6 @@ export class NavbarComponent {
     private authService: AuthenticationService,
     private router: Router
   ) {
-    // Verificar o status de login
-    // this.authService.isLoggedIn$.subscribe(loggedIn => {
-    //   this.isLoggedIn = loggedIn;
-    // });
   }
 
   logout(): void {

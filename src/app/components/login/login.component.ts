@@ -37,7 +37,6 @@ export class LoginComponent {
           this.authService.setToken(response.token);
         }
 
-        // Obtém o estado com tipagem segura
         const navigation = this.router.getCurrentNavigation();
         const navigationState = navigation?.extras?.state as NavigationState;
 

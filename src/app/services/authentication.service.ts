@@ -82,7 +82,6 @@ export class AuthenticationService {
     return false;
   }
 
-  // Método para adicionar ao carrinho com verificação de autenticação
   addToCart(productId: number): Observable<Cart> {
     if (!this.isAuthenticated()) {
       this.router.navigate(['/login'], {
@@ -106,21 +105,4 @@ export class AuthenticationService {
     return this.addToCart(productId);
   }
 
-  // isTokenExpired(): boolean {
-  //   const token = this.getToken();
-  //   if (!token) return true;
-  //
-  //   try {
-  //     // Decodifica o token JWT manualmente
-  //     const payload = JSON.parse(atob(token.split('.')[1]));
-  //     const exp = payload.exp;
-  //     const now = Date.now() / 1000; // Timestamp em segundos
-  //
-  //     // Adiciona margem de segurança de 10 segundos
-  //     return exp < now - 10;
-  //   } catch (e) {
-  //     console.error('Erro ao decodificar token:', e);
-  //     return true;
-  //   }
-  // }
 }

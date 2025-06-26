@@ -148,7 +148,6 @@ h2 {
   }
 }
 
-// Seção de total do pedido
 .bg-light {
   background-color: $light-pink !important;
 }
@@ -157,12 +156,10 @@ h2 {
   color: $primary-color !important;
 }
 
-// QR Code section
 .border {
   border-color: $border-color !important;
 }
 
-// Responsividade
 @media (max-width: 768px) {
   .card {
     margin-bottom: 1.5rem;
@@ -178,7 +175,6 @@ h2 {
   }
 }
 
-// Efeitos de hover para elementos interativos
 button, .btn, [role="button"] {
   transition: all 0.2s ease;
 
@@ -187,7 +183,6 @@ button, .btn, [role="button"] {
   }
 }
 
-// Input group para código PIX
 .input-group {
   .form-control {
     &:focus {
@@ -204,7 +199,6 @@ button, .btn, [role="button"] {
   }
 }
 
-// Ícones
 .fas, .fa {
   margin-right: 0.3rem;
 }

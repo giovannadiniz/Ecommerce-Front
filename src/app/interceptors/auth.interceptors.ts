@@ -6,7 +6,6 @@ import { isPlatformBrowser } from '@angular/common';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
 
-  // Não interceptar requisições de autenticação
   if (req.url.includes('/auth/login') || req.url.includes('/auth/register')) {
     return next(req);
   }

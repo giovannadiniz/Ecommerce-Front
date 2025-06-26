@@ -30,18 +30,15 @@ $white: #ffffff;
 $light-gray: #f8f9fa;
 $dark-gray: #343a40;
 
-// Fontes
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
-/* Estilos Gerais */
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: $white;
   color: $dark-gray;
 }
 
-/* Menu Navbar */
 .menu {
   background: linear-gradient(135deg, $primary-color, $dark-pink);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -83,13 +80,11 @@ body {
   }
 }
 
-/* Container Principal */
 .container {
   padding-top: 2rem;
   padding-bottom: 4rem;
 }
 
-/* Cards de Produtos */
 .card {
   border: none;
   border-radius: 10px;
@@ -117,7 +112,7 @@ body {
     color: $dark-gray;
     margin-bottom: 0.75rem;
 
-    &:nth-of-type(2) { // Estilo para o preço
+    &:nth-of-type(2) {
       color: $primary-color;
       font-weight: 600;
     }
@@ -131,7 +126,6 @@ body {
   }
 }
 
-/* Botão Comprar */
 .button-comprar {
   background-color: $primary-color;
   color: $white;
